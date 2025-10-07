@@ -1,0 +1,235 @@
+#:kivy 2.1.0
+
+<LoginScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            text: "Login"
+            font_size: sp(24)
+            size_hint_y: None
+            height: dp(40)
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+
+            Label:
+                text: "Username:"
+                size_hint_x: 0.3
+            TextInput:
+                id: input_user
+                multiline: False
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+
+            Label:
+                text: "Senha:"
+                size_hint_x: 0.3
+            TextInput:
+                id: input_pass
+                multiline: False
+                password: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            spacing: dp(10)
+            Button:
+                text: "Login"
+                on_release: root.login(input_user.text, input_pass.text)
+            Button:
+                text: "Criar Conta"
+                on_release: root.manager.current = "register"
+
+<RegisterScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            text: "Cadastro de Usuário"
+            font_size: sp(24)
+            size_hint_y: None
+            height: dp(40)
+
+        BoxLayout:
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+            Label:
+                text: "Usuário:"
+                size_hint_x: 0.3
+            TextInput:
+                id: input_user
+                multiline: False
+
+        BoxLayout:
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+            Label:
+                text: "Email:"
+                size_hint_x: 0.3
+            TextInput:
+                id: input_email
+                multiline: False
+
+        BoxLayout:
+            spacing: dp(10)
+            size_hint_y: None
+            height: dp(40)
+            Label:
+                text: "Senha:"
+                size_hint_x: 0.3
+            TextInput:
+                id: input_pass
+                multiline: False
+                password: True
+
+        Button:
+            text: "Cadastrar"
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.cadastrar_usuario(input_user.text, input_email.text, input_pass.text)
+
+        Button:
+            text: "Voltar"
+            size_hint_y: None
+            height: dp(44)
+            on_release: root.manager.current = "login"
+
+<TelaCadastro>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(12)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            Button:
+                text: "Logout"
+                on_release: app.root.current = "login"
+
+        Label:
+            text: "Cadastro de Jogadores"
+            size_hint_y: None
+            height: dp(36)
+            font_size: sp(18)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            spacing: dp(8)
+
+            TextInput:
+                id: input_jogador
+                hint_text: "Nome do jogador"
+                multiline: False
+
+            Button:
+                text: "Adicionar"
+                size_hint_x: 0.35
+                on_release: root.adicionar_jogador(input_jogador.text)
+
+        Label:
+            id: contador
+            text: "Jogadores: 0"
+            size_hint_y: None
+            height: dp(24)
+
+        ScrollView:
+            size_hint_y: 0.35
+            do_scroll_x: False
+            do_scroll_y: True
+
+            Label:
+                id: lista_jogadores
+                text: ""
+                size_hint_y: None
+                height: self.texture_size[1]
+                text_size: self.width, None
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            spacing: dp(8)
+
+            TextInput:
+                id: num_times
+                hint_text: "Quantidade de times"
+                multiline: False
+                input_filter: "int"
+
+            TextInput:
+                id: jogadores_por_time
+                hint_text: "Jogadores por time"
+                multiline: False
+                input_filter: "int"
+
+            Button:
+                text: "Dividir Times"
+                size_hint_x: 0.45
+                on_release: root.dividir_times()
+
+        Label:
+            id: status
+            text: ""
+            size_hint_y: None
+            height: dp(24)
+            color: 1,0,0,1
+
+<TelaTimes>:
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(8)
+        padding: dp(12)
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            Button:
+                text: "Logout"
+                on_release: app.root.current = "login"
+
+        Label:
+            text: "Times Formados"
+            size_hint_y: None
+            height: dp(36)
+            font_size: sp(18)
+
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            GridLayout:
+                id: grid_times
+                cols: 1
+                spacing: dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: [0, dp(10), 0, dp(10)]
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            spacing: dp(8)
+            Button:
+                text: "Adicionar Jogador"
+                on_release: root.popup_adicionar_jogador()
+            Button:
+                text: "Adicionar Time"
+                on_release: root.adicionar_time()
+            Button:
+                text: "Voltar"
+                on_release: app.root.current = "tela_cadastro"
