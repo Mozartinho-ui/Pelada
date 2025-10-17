@@ -2,6 +2,11 @@
 import sqlite3   # acho que precisa pro banco
 import os        # esse é para mexer nos caminhos
 import sys       # sistema
+
+
+# adiciona a pasta pai no sys.path (antes das importações do backend)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 # coisas do kivy que precisa
 from kivy.app import App
 from kivy.lang import Builder
@@ -11,8 +16,11 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+from backend.app import create_user, verify_user, authenticate_user, DB_NAME, send_login_email
 
-# aqui eu coloco o backend, não sei se é o jeito certo mas funciona
+
+
+# aqui eu coloco o backend
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from backend.app import create_user, verify_user, authenticate_user  # importando funções do outro arquivo
 
@@ -78,6 +86,43 @@ class LoginScreen(Screen):   # essa tela é só pra login
 
         btn_verify.bind(on_release=verificar)  # botão chama a função verificar
         popup.open()
+
+    # Recuperação de senha
+    def forgot_password_popup(self):
+        layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
+        input_email = TextInput(hint_text="Digite seu email", multiline=False)
+        btn_send = Button(text="Enviar nova senha", size_hint_y=None, height=40)
+        layout.add_widget(Label(text="Digite seu email para receber uma nova senha temporária:"))
+        layout.add_widget(input_email)
+        layout.add_widget(btn_send)
+        popup = Popup(title="Esqueci Minha Senha", content=layout, size_hint=(0.8, 0.5))
+
+        def enviar(_):
+            email = input_email.text.strip()
+            if not email:
+                return
+
+            conn = sqlite3.connect(DB_NAME)
+            cursor = conn.cursor()
+            cursor.execute("SELECT username FROM users WHERE email=?", (email,))
+            row = cursor.fetchone()
+            conn.close()
+
+            if row:
+                username = row[0]
+                # chama a função send_login_email apenas com email e username
+                if send_login_email(email, username):
+                    popup.dismiss()
+                    self._popup(f"Email enviado para {email} com sua nova senha temporária!")
+                else:
+                    self._popup("Erro ao enviar o email.")
+            else:
+                self._popup("Email não encontrado.")
+
+        btn_send.bind(on_release=enviar)
+        popup.open()
+
+
 
 
 # TELA DE REGISTRO

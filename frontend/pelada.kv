@@ -50,6 +50,15 @@
                 text: "Criar Conta"
                 on_release: root.manager.current = "register"
 
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            Button:
+                text: "Esqueci minha senha"
+                on_release: root.forgot_password_popup()
+
+
+
 <RegisterScreen>:
     BoxLayout:
         orientation: "vertical"
