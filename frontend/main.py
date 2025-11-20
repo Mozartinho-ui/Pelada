@@ -3,6 +3,10 @@ import sqlite3   # acho que precisa pro banco
 import os        # esse é para mexer nos caminhos
 import sys       # sistema
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
 # adiciona a pasta pai no sys.path (antes das importações do backend)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -15,10 +19,21 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+<<<<<<< HEAD
 
 # importa do backend (apenas uma vez)
 from backend.app import create_user, verify_user, authenticate_user, DB_NAME, send_login_email
 
+=======
+from backend.app import create_user, verify_user, authenticate_user, DB_NAME, send_login_email
+
+
+
+# aqui eu coloco o backend
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from backend.app import create_user, verify_user, authenticate_user  # importando funções do outro arquivo
+
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
 # carregar o arquivo kv (a parte do layout do app)
 KV_PATH = os.path.join(os.path.dirname(__file__), "pelada.kv")
 Builder.load_file(KV_PATH)  # se não carregar o kv não aparece nada na tela
@@ -118,6 +133,11 @@ class LoginScreen(Screen):   # essa tela é só pra login
         popup.open()
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
 # TELA DE REGISTRO
 class RegisterScreen(Screen):
     def cadastrar_usuario(self, username, email, password):
@@ -259,11 +279,16 @@ class TelaTimes(Screen):
                 box = BoxLayout(orientation="vertical", spacing=2)
                 lbl = Label(text=f"[b]{time['nome']}[/b]", markup=True, size_hint_y=None, height=30)
                 box.add_widget(lbl)
+<<<<<<< HEAD
                 # agora criamos botões com bind para excluir
                 for p_idx, jogador_nome in enumerate(time['jogadores']):
                     btn = Button(text=jogador_nome, size_hint_y=None, height=30)
                     # captura índices com defaults para evitar late binding
                     btn.bind(on_release=lambda inst, ti=idx, pi=p_idx: self.confirm_excluir(ti, pi))
+=======
+                for j in time['jogadores']:
+                    btn = Button(text=j, size_hint_y=None, height=30)
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
                     box.add_widget(btn)
                 box_times.add_widget(box)
             box_confronto.add_widget(box_times)
@@ -292,9 +317,14 @@ class TelaTimes(Screen):
             box.height = (len(time['jogadores']) + 1) * 40
             lbl = Label(text=f"[b]{time['nome']}[/b]", markup=True, size_hint_y=None, height=30)
             box.add_widget(lbl)
+<<<<<<< HEAD
             for p_idx, jogador_nome in enumerate(time['jogadores']):
                 btn = Button(text=jogador_nome, size_hint_y=None, height=30)
                 btn.bind(on_release=lambda inst, ti=idx, pi=p_idx: self.confirm_excluir(ti, pi))
+=======
+            for j in time['jogadores']:
+                btn = Button(text=j, size_hint_y=None, height=30)
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
                 box.add_widget(btn)
             self.ids.grid_times.add_widget(box)
 
@@ -357,6 +387,7 @@ class TelaTimes(Screen):
         self.manager.get_screen("tela_cadastro").logout()
         self.manager.current = "login"  # volta pro login
 
+<<<<<<< HEAD
     # --------------- NOVO: confirmação e exclusão ---------------
     def confirm_excluir(self, time_idx, player_idx):
         """
@@ -399,6 +430,8 @@ class TelaTimes(Screen):
         btn_excluir.bind(on_release=excluir)
         popup.open()
 
+=======
+>>>>>>> 8f1e1dc1a65af686c79c434a4adadb590c07c53b
 
 # classe principal do app
 class PeladaProApp(App):
